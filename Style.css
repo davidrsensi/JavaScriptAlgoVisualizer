@@ -1,0 +1,76 @@
+
+.pivot {
+    background-color: rgb(201, 149, 201) !important;
+    padding-top: 7px;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-align: center;
+    display: inline-block;
+}
+
+.red-text {
+    color: darkred;
+    background-color: lightcoral;
+    padding-top: 7px;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-align: center;
+    display: inline-block;
+}
+
+.green-text {
+    color: darkgreen;
+    background-color: lightgreen;
+    padding-top: 7px;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-align: center;
+    display: inline-block;
+}
+
+.yellow-text {
+    color: rgb(179, 152, 0);
+    background-color: rgb(252, 252, 176);
+    padding-top: 7px;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-align: center;
+    display: inline-block;
+}
+
+.vals {
+    padding-top: 7px;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-align: center;
+    display: inline-block;
+    background: lightblue;
+}
+
+.contents {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-content: center;
+    bottom: 0;
+    vertical-align: bottom;
+}
+
+.right-align {
+    float: right;
+}
+
+.navbar {
+    background-color: lightgrey;
+    height: 25px;
+}
+
+#bodyDiv {
+    height: 100vh;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
