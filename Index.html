@@ -5,29 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Algorithm Visualizer v1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="style.css">
     
 </head>
 <body>
-    <div id="bodyDiv">
-        <nav class="navbar">
-            <div class="input">
-                <input type="number" id="ArraySize">
-                <input type="submit" id="ArraySizeSubmit">
-                
-                <input type="submit" id="QuickSort" value="Start Quick Sort" class="right-align" style="display : none">
-                <input type="submit" id="MergeSort" value="Start Merge Sort" class="right-align" style="display : none">
-                <input type="submit" id="SelectionSort" value="Start Selection Sort" class="right-align" style="display : none">
-                <input type="submit" id="BubbleSort" value="Start Bubble Sort" class="right-align" style="display : none">
-                <input type="range" min="0" max="500" value="250" class="slider right-align" id="Speed" style="display : none">
-                
+
+    <nav>
+        <div class="nav-wrapper">
+            <div class="row">
+                    <div class="col s12  infobox center add-height valign-wrapper">
+                        <div class="input-field col s0">
+                            <input id="ArraySize" placeholder="Enter array size" type="number">
+                        </div>
+                        <div class="input-field col s0">
+                            <input id="ArraySizeSubmit" type="submit" value="Create Array" class="waves-light btn">
+                        </div>
+
+                        
+
+                        <div class="input-field col s0">
+                            <label for="speed" id="Delay" style="display : none">Delay (0-500ms)</label>
+                            <input type="range" min="0" max="500" value="250" class="slider right-align" id="Speed" style="display : none">
+                        </div>
+                        <div class="input-field col s0 right-align">
+                            <select id="SortSelect" class="browser-default " style="display : none">
+                                <option value="MergeSort">Merge Sort</option>
+                                <option value="QuickSort">Quick Sort</option>
+                                <option value="SelectionSort">Selection Sort</option>
+                                <option value="BubbleSort">Bubble Sort</option>
+                            </select>
+                        </div>
+
+                        <div class="input-field col s0 right-align">
+                            <input id="SortSubmit" type="submit" value="Start Sort" class="waves-light btn" style="display : none">
+                        </div>
+
+
+                </div>
             </div>
-        </nav>
+        </div>  
+    </nav>
+    <div id="bodyDiv">
+        
         <div class="contents" id="contentsDiv">
 
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

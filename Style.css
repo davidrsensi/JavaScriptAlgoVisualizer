@@ -56,14 +56,6 @@
     vertical-align: bottom;
 }
 
-.right-align {
-    float: right;
-}
-
-.navbar {
-    background-color: lightgrey;
-    height: 25px;
-}
 
 #bodyDiv {
     height: 100vh;

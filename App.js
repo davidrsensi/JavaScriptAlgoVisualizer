@@ -4,18 +4,14 @@
 const arrSizeInput = document.getElementById('ArraySize');
 const arraySizeSubmit = document.getElementById('ArraySizeSubmit');
 const contentsDiv = document.getElementById('contentsDiv');
-const BubbleSortSubmit = document.getElementById('BubbleSort');
-const SelectionSortSubmit = document.getElementById('SelectionSort');
-const MergeSortSubmit = document.getElementById('MergeSort');
-const QuickSortSubmit = document.getElementById('QuickSort');
+const SortSelect = document.getElementById('SortSelect');
+const SortSubmit = document.getElementById('SortSubmit');
 const speed = document.getElementById('Speed');
+const delay = document.getElementById('Delay');
 
 // Event listeners
-arraySizeSubmit.addEventListener("click", GetArraySize);
-BubbleSortSubmit.addEventListener("click", BubbleSort);
-SelectionSortSubmit.addEventListener("click", SelectionSort);
-MergeSortSubmit.addEventListener("click", MergeSortClick);
-QuickSortSubmit.addEventListener("click", QuickSortClick);
+arraySizeSubmit.addEventListener("click", GetArraySize)
+SortSubmit.addEventListener("click", StartSort)
 
 // Colors for visualization.
 const yellow = 'yellow-text';
@@ -24,20 +20,43 @@ const green = 'green-text';
 const purple = 'vals pivot';
 const childElements = contentsDiv.getElementsByTagName('*');
 
+function StartSort (e) {
+    sortType = SortSelect.options[SortSelect.selectedIndex].value;
+
+    console.log(sortType);
+
+    switch (sortType) {
+        case "BubbleSort":
+            BubbleSort();
+            break;
+        case "SelectionSort":
+            SelectionSort();
+            break;
+        case "MergeSort":
+            MergeSortClick();
+            break;
+        case "QuickSort":
+            QuickSortClick();
+            break;
+    }
+
+}
+
 // Initialize array.
 function GetArraySize (e) {
+
     const inputVal = arrSizeInput.value;
     let contents = '';
     let randomVal;
 
     if (inputVal > 0 && inputVal <= 20){
 
-        // Make all sorting buttons visible.
-        BubbleSortSubmit.setAttribute('style', 'display : visible');
-        SelectionSortSubmit.setAttribute('style', 'display : visible');
-        MergeSortSubmit.setAttribute('style', 'display : visible');
-        QuickSortSubmit.setAttribute('style', 'display : visible');
+        // Make drop down/submit/speed slider visible.
+        SortSelect.setAttribute('style', 'display : visible');
+        SortSubmit.setAttribute('style', 'display : visible');
         Speed.setAttribute('style', 'display : visible');
+        delay.setAttribute('style', 'display : visible');
+
 
         // Create new div for size of array user inputs.
         for (let count = 0; count < inputVal; count++){
@@ -55,12 +74,11 @@ function GetArraySize (e) {
     e.preventDefault();
 }
 
-async function MergeSortClick (e) {
+async function MergeSortClick () {
 
     // On click start merge sort
     await MergeSort(0, childElements.length - 1); 
 
-    e.preventDefault();
 }
 
 async function MergeSort (start, end) {
@@ -129,12 +147,11 @@ async function MergeSortMerge(start, half, end){
     await Sleep();
 }
 
-async function QuickSortClick (e) {
+async function QuickSortClick () {
     
     // On click start quick sort.
     await QuickSort(0, childElements.length);
 
-    e.preventDefault();
 }
 
 async function QuickSort (startIndex, arrayLen) {
@@ -322,7 +339,7 @@ async function QuickSort (startIndex, arrayLen) {
 }
 
 
-async function SelectionSort (e) {
+async function SelectionSort () {
     let sorted = false; // set flag so while loop continues until completely sorted.
     let elementsLen = childElements.length; 
 
@@ -369,7 +386,7 @@ async function SelectionSort (e) {
     }
 }
 
-async function BubbleSort (e) {
+async function BubbleSort () {
 
     let sorted = false;
     let divArraySize = contentsDiv.childElementCount - 1;
@@ -417,7 +434,7 @@ async function BubbleSort (e) {
         }
     }
 
-    e.preventDefault();
+    
 }
 
 
