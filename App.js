@@ -1,5 +1,8 @@
 //  Created by: David Sensibaugh
 
+// TODO:
+// 1. Heap sort
+// 2. Block submit clicks while visualization is running
 
 const arrSizeInput = document.getElementById('ArraySize');
 const arraySizeSubmit = document.getElementById('ArraySizeSubmit');
@@ -14,11 +17,11 @@ arraySizeSubmit.addEventListener("click", GetArraySize)
 SortSubmit.addEventListener("click", StartSort)
 
 // Colors for visualization.
-const yellow = 'yellow-text';
-const red = 'red-text';
+const yellow = 'yellow-background';
+const red = 'red-background';
 const blue = 'vals';
-const green = 'green-text';
-const purple = 'vals pivot';
+const green = 'green-background';
+const purple = 'purple-background';
 const childElements = contentsDiv.getElementsByTagName('*');
 
 
@@ -54,7 +57,7 @@ function GetArraySize (e) {
     e.preventDefault();
 }
 
-function StartSort (e) {
+async function StartSort (e) {
     sortType = SortSelect.options[SortSelect.selectedIndex].value;
 
     console.log(sortType);
@@ -67,18 +70,20 @@ function StartSort (e) {
             SelectionSort();
             break;
         case "MergeSort":
-            MergeSortClick();
+            await MergeSort(0, childElements.length - 1);
             break;
         case "QuickSort":
-            QuickSortClick();
+            await QuickSort(0, childElements.length);
+            break;
+        case "HeapSort":
+            HeapSort();
             break;
     }
 }
 
-async function MergeSortClick () {
+async function HeapSort () {
 
-    // On click start merge sort
-    await MergeSort(0, childElements.length - 1); 
+    console.log('test');
 
 }
 
@@ -171,12 +176,6 @@ async function MergeSortMerge(start, half, end){
     await Sleep();
 }
 
-async function QuickSortClick () {
-    
-    // On click start quick sort.
-    await QuickSort(0, childElements.length);
-
-}
 
 async function QuickSort (startIndex, arrayLen) {
     let lastIndex; // Find last index in array.

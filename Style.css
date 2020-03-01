@@ -1,5 +1,5 @@
 
-.pivot {
+.purple-background {
     background-color: rgb(201, 149, 201) !important;
     padding-top: 7px;
     margin-right: 5px;
@@ -8,7 +8,7 @@
     display: inline-block;
 }
 
-.red-text {
+.red-background {
     color: darkred;
     background-color: lightcoral;
     padding-top: 7px;
@@ -18,7 +18,7 @@
     display: inline-block;
 }
 
-.green-text {
+.green-background {
     color: darkgreen;
     background-color: lightgreen;
     padding-top: 7px;
@@ -28,7 +28,7 @@
     display: inline-block;
 }
 
-.yellow-text {
+.yellow-background {
     color: rgb(179, 152, 0);
     background-color: rgb(252, 252, 176);
     padding-top: 7px;
