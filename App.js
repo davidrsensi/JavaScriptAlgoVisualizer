@@ -1,7 +1,5 @@
 //  Created by: David Sensibaugh
 
-// TODO:
-// Block submit clicks while visualization is running
 
 const arrSizeInput = document.getElementById('ArraySize');
 const arraySizeSubmit = document.getElementById('ArraySizeSubmit');
@@ -57,16 +55,20 @@ function GetArraySize (e) {
 }
 
 async function StartSort (e) {
+    // Block out buttons while sort is running.
+    arraySizeSubmit.disabled = true;
+    SortSubmit.disabled = true;
+
     sortType = SortSelect.options[SortSelect.selectedIndex].value;
 
     console.log(sortType);
 
     switch (sortType) {
         case "BubbleSort":
-            BubbleSort();
+            await BubbleSort();
             break;
         case "SelectionSort":
-            SelectionSort();
+            await SelectionSort();
             break;
         case "MergeSort":
             await MergeSort(0, childElements.length - 1);
@@ -78,6 +80,10 @@ async function StartSort (e) {
             await HeapSort(0, childElements.length);
             break;
     }
+
+    // Unblock buttons.
+    arraySizeSubmit.disabled = false;
+    SortSubmit.disabled = false;
 }
 
 async function HeapSort (start, length) {
@@ -88,18 +94,23 @@ async function HeapSort (start, length) {
     let leftChild;
     let rightChild;
 
+    // Return if array size is 1.
     if (length === 0){
         childElements[start].className = green;
         return;
     }
 
+    // Sort until heap is a max heap.
     while (sorted === false){
-        sorted = true;
+        sorted = true; // Keep looping until no swaps happen.
+
         for (let counter = Math.floor((start + length) / 2); counter >= 0; counter--){
+            // Find parent and child nodes.
             parentIndex = parseInt(childElements[counter].id)
             leftChild = parentIndex * 2 + 1
             rightChild = parentIndex * 2 + 2
 
+            // Ignore if child nodes outside index of array.
             if (leftChild > end && rightChild > end){
                 continue;
             }
@@ -108,6 +119,7 @@ async function HeapSort (start, length) {
                 childElements[leftChild].className = yellow;
                 await Sleep();
 
+                // If left child greater than parent, swap.
                 if (parseInt(childElements[leftChild].innerHTML) > parseInt(childElements[counter].innerHTML)){
                     childElements[counter].className = red;
                     childElements[leftChild].className = red;
@@ -123,19 +135,20 @@ async function HeapSort (start, length) {
                 await Sleep();
 
             }
-            else {
+            else { // Both childs exist.
                 largerChild = null;
 
                 childElements[counter].className = purple;
                 childElements[leftChild].className = yellow;
                 childElements[rightChild].className = yellow;
                 await Sleep();
+
+                // Find larger child.
                 if (parseInt(childElements[leftChild].innerHTML) > parseInt(childElements[rightChild].innerHTML)){
                     largerChild = leftChild
                     childElements[leftChild].className = yellow;
                     childElements[rightChild].className = blue;
                     await Sleep();
-                await Sleep();
                 }
                 else {
                     largerChild = rightChild
@@ -144,7 +157,7 @@ async function HeapSort (start, length) {
                     await Sleep();
                 }
 
-
+                // Compare larger child to parent and swap if child is larger.
                 if (parseInt(childElements[largerChild].innerHTML) > parseInt(childElements[counter].innerHTML)){
                     childElements[counter].className = red;
                     childElements[largerChild].className = red;
@@ -166,6 +179,7 @@ async function HeapSort (start, length) {
     childElements[start].className = red;
     childElements[end].className = red;
     await Sleep();
+    // Swap larget value to end.
     SwapValues(childElements[start], childElements[end]);
     childElements[start].className = green;
     childElements[end].className = green;
@@ -173,6 +187,7 @@ async function HeapSort (start, length) {
     childElements[start].className = blue;
     await Sleep();
 
+    // Recursively call HeapSort until fully sorted.
     HeapSort(start, end);
     return;
 
