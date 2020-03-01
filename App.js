@@ -1,8 +1,7 @@
 //  Created by: David Sensibaugh
 
 // TODO:
-// 1. Heap sort
-// 2. Block submit clicks while visualization is running
+// Block submit clicks while visualization is running
 
 const arrSizeInput = document.getElementById('ArraySize');
 const arraySizeSubmit = document.getElementById('ArraySizeSubmit');
@@ -76,14 +75,107 @@ async function StartSort (e) {
             await QuickSort(0, childElements.length);
             break;
         case "HeapSort":
-            HeapSort();
+            await HeapSort(0, childElements.length);
             break;
     }
 }
 
-async function HeapSort () {
+async function HeapSort (start, length) {
+    let largerChild;
+    const end = length - 1;
+    let sorted = false;
+    let parentIndex;
+    let leftChild;
+    let rightChild;
 
-    console.log('test');
+    if (length === 0){
+        childElements[start].className = green;
+        return;
+    }
+
+    while (sorted === false){
+        sorted = true;
+        for (let counter = Math.floor((start + length) / 2); counter >= 0; counter--){
+            parentIndex = parseInt(childElements[counter].id)
+            leftChild = parentIndex * 2 + 1
+            rightChild = parentIndex * 2 + 2
+
+            if (leftChild > end && rightChild > end){
+                continue;
+            }
+            else if (leftChild <= end && rightChild > end){ // If left child exists but right doesn't.
+                childElements[counter].className = yellow;
+                childElements[leftChild].className = yellow;
+                await Sleep();
+
+                if (parseInt(childElements[leftChild].innerHTML) > parseInt(childElements[counter].innerHTML)){
+                    childElements[counter].className = red;
+                    childElements[leftChild].className = red;
+                    await Sleep();
+                    SwapValues(childElements[leftChild], childElements[counter]);
+                    sorted = false;
+                }
+                childElements[counter].className = green;
+                childElements[leftChild].className = green;
+                await Sleep();
+                childElements[counter].className = blue;
+                childElements[leftChild].className = blue;
+                await Sleep();
+
+            }
+            else {
+                largerChild = null;
+
+                childElements[counter].className = purple;
+                childElements[leftChild].className = yellow;
+                childElements[rightChild].className = yellow;
+                await Sleep();
+                if (parseInt(childElements[leftChild].innerHTML) > parseInt(childElements[rightChild].innerHTML)){
+                    largerChild = leftChild
+                    childElements[leftChild].className = yellow;
+                    childElements[rightChild].className = blue;
+                    await Sleep();
+                await Sleep();
+                }
+                else {
+                    largerChild = rightChild
+                    childElements[leftChild].className = blue;
+                    childElements[rightChild].className = yellow;
+                    await Sleep();
+                }
+
+
+                if (parseInt(childElements[largerChild].innerHTML) > parseInt(childElements[counter].innerHTML)){
+                    childElements[counter].className = red;
+                    childElements[largerChild].className = red;
+                    await Sleep();
+                    SwapValues(childElements[largerChild], childElements[counter]);
+                    sorted = false;
+                    
+                }
+                childElements[counter].className = green;
+                childElements[largerChild].className = green;
+                await Sleep();
+                childElements[counter].className = blue;
+                childElements[largerChild].className = blue;
+                await Sleep();
+            }
+        }
+    }
+
+    childElements[start].className = red;
+    childElements[end].className = red;
+    await Sleep();
+    SwapValues(childElements[start], childElements[end]);
+    childElements[start].className = green;
+    childElements[end].className = green;
+    await Sleep();
+    childElements[start].className = blue;
+    await Sleep();
+
+    HeapSort(start, end);
+    return;
+
 
 }
 
@@ -194,7 +286,6 @@ async function QuickSort (startIndex, arrayLen) {
     let pivot; // Element in div that is selected as pivot.
     let pivotPlaced = false; // Pivot is in correct index if true.
 
-
     if ((lastIndex - startIndex) >= 2){ // If array > 3, find median of 3.
         let randomMidIndex = Math.floor(Math.random() * ((arrayLen - startIndex) - 1)) + (startIndex + 1);
 
@@ -241,12 +332,12 @@ async function QuickSort (startIndex, arrayLen) {
     let greaterThanPivotFound;
 
     // Find index where pivot belongs in array.
-    while(pivotPlaced === false){
+    while (pivotPlaced === false){
         lessThanPivotFound = false;
         greaterThanPivotFound = false;
 
         // Starting from left side, find value greater than pivot.
-        while(greaterThanPivotFound === false){
+        while (greaterThanPivotFound === false){
 
             if (left >= lastIndex){
                 left = lastIndex;
@@ -276,7 +367,7 @@ async function QuickSort (startIndex, arrayLen) {
         }
 
         // starting from right side, find value less than pivot
-        while(lessThanPivotFound === false){
+        while (lessThanPivotFound === false){
             
             if (right <= 0){
                 right = 0;
@@ -294,7 +385,7 @@ async function QuickSort (startIndex, arrayLen) {
                 childElements[right].className = yellow; 
                 await Sleep();
             }
-            
+
             // Break once we find value less than pivot value.
             if (parseInt(childElements[right].innerHTML) < pivotVal){
                 lessThanPivotFound = true;
