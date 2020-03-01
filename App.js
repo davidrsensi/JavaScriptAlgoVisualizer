@@ -215,7 +215,6 @@ async function QuickSort (startIndex, arrayLen) {
             childElements[lastIndex].className = purple;
             pivot = childElements[lastIndex];
         }
-
     } 
     else {
         // If less than 3 elements passed in array, compare values and swap when needed.
@@ -257,13 +256,15 @@ async function QuickSort (startIndex, arrayLen) {
             if (childElements[left] === pivot){
                 left++;
             }
-            childElements[left].className = yellow; 
-            await Sleep();
             
             if (left >= right){
-                childElements[left].className = blue;
                 break;
             }
+            else {
+                childElements[left].className = yellow; 
+                await Sleep();
+            }
+
             // Break once we find value greater than pivot value.
             if (parseInt(childElements[left].innerHTML) > pivotVal){
                 greaterThanPivotFound = true;
@@ -285,13 +286,15 @@ async function QuickSort (startIndex, arrayLen) {
             if (childElements[right] === pivot){
                 right--;
             }
-            childElements[right].className = yellow;
-            await Sleep();
 
             if (right < left){
-                childElements[right].className = blue;
                 break;
             }
+            else {
+                childElements[right].className = yellow; 
+                await Sleep();
+            }
+            
             // Break once we find value less than pivot value.
             if (parseInt(childElements[right].innerHTML) < pivotVal){
                 lessThanPivotFound = true;
