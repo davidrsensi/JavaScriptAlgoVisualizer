@@ -16,31 +16,11 @@ SortSubmit.addEventListener("click", StartSort)
 // Colors for visualization.
 const yellow = 'yellow-text';
 const red = 'red-text';
+const blue = 'vals';
 const green = 'green-text';
 const purple = 'vals pivot';
 const childElements = contentsDiv.getElementsByTagName('*');
 
-function StartSort (e) {
-    sortType = SortSelect.options[SortSelect.selectedIndex].value;
-
-    console.log(sortType);
-
-    switch (sortType) {
-        case "BubbleSort":
-            BubbleSort();
-            break;
-        case "SelectionSort":
-            SelectionSort();
-            break;
-        case "MergeSort":
-            MergeSortClick();
-            break;
-        case "QuickSort":
-            QuickSortClick();
-            break;
-    }
-
-}
 
 // Initialize array.
 function GetArraySize (e) {
@@ -72,6 +52,27 @@ function GetArraySize (e) {
     contentsDiv.innerHTML = contents; // Add divs to html.
 
     e.preventDefault();
+}
+
+function StartSort (e) {
+    sortType = SortSelect.options[SortSelect.selectedIndex].value;
+
+    console.log(sortType);
+
+    switch (sortType) {
+        case "BubbleSort":
+            BubbleSort();
+            break;
+        case "SelectionSort":
+            SelectionSort();
+            break;
+        case "MergeSort":
+            MergeSortClick();
+            break;
+        case "QuickSort":
+            QuickSortClick();
+            break;
+    }
 }
 
 async function MergeSortClick () {
@@ -106,18 +107,35 @@ async function MergeSortMerge(start, half, end){
     const halfIndex = half;
     half++; // Split array so half index isn't overlapping.
 
+
+    // Display section of array being analyzed by flashing yellow and then returning section to blue.
     for(let count = initStartVal; count <= initEndVal; count++){
         childElements[count].className = yellow;
+    }
+    await Sleep();
+
+    for(let count = initStartVal; count <= initEndVal; count++){
+        childElements[count].className = blue;
     }
     await Sleep();
 
     // Look at first half and second half of array for which has a smaller value.
     while (start <= halfIndex && half <= end){
         if (parseInt(childElements[start].innerHTML) < parseInt(childElements[half].innerHTML)){
+            childElements[start].className = yellow;
+            await Sleep();
+
             tempArray.push(childElements[start].cloneNode(true)); // .cloneNode used to not change childElements by reference.
             start++;
         } 
         else {
+            // If values in wrong order, mark as red and then push lower valued node to temp array.
+            childElements[half].className = red;
+            childElements[start].className = red;
+            await Sleep();
+            childElements[start].className = blue;
+            childElements[half].className = yellow;
+            await Sleep();
             tempArray.push(childElements[half].cloneNode(true));
             half++;
         }
@@ -126,23 +144,29 @@ async function MergeSortMerge(start, half, end){
     // Either first half or second half will have left over values, depending on which had smaller values.
     // Add final values to tempArray.
     while (start <= halfIndex){
+        childElements[start].className = yellow;
+
         tempArray.push(childElements[start].cloneNode(true));
         start++;
     }
     while (half <= end){
+        childElements[half].className = yellow;
+
         tempArray.push(childElements[half].cloneNode(true));
         half++;
     }
+    await Sleep();
 
-    for (let count = initStartVal; count <= initEndVal; count++){
-        childElements[count].className = 'vals';
-    }
-
-    // Set childElements to tempArray values. TempArray index starts at 0 but childElements starts wherever the function looks at.
+    // Replace elements with values in temp array.
     for (let count = 0; count < tempArray.length; count++){
-        childElements[count + initStartVal].innerHTML = tempArray[count].innerHTML;
-        childElements[count + initStartVal].style.height = tempArray[count].style.height
-        childElements[count + initStartVal].className = green;
+        if(childElements[count + initStartVal].innerHTML !== tempArray[count].innerHTML){
+            childElements[count + initStartVal].innerHTML = tempArray[count].innerHTML;
+            childElements[count + initStartVal].style.height = tempArray[count].style.height
+            childElements[count + initStartVal].className = green; 
+        }
+        else {
+            childElements[count + initStartVal].className = green;
+        }
     }
     await Sleep();
 }
@@ -181,15 +205,15 @@ async function QuickSort (startIndex, arrayLen) {
         const indexEnd = parseInt(childElements[lastIndex].innerHTML)
 
         if ((indexBegin <= indexRandom && indexBegin >= indexEnd) || (indexBegin >= indexRandom && indexBegin <= indexEnd)) {
-            childElements[startIndex].className = "vals pivot";
+            childElements[startIndex].className = purple;
             pivot = childElements[startIndex];
         } 
         else if ((indexRandom <= indexBegin && indexRandom >= indexEnd) || (indexRandom >= indexBegin && indexRandom <= indexEnd)) {
-            childElements[randomMidIndex].className = "vals pivot";
+            childElements[randomMidIndex].className = purple;
             pivot = childElements[randomMidIndex];
         } 
         else {
-            childElements[lastIndex].className = "vals pivot";
+            childElements[lastIndex].className = purple;
             pivot = childElements[lastIndex];
         }
 
@@ -238,7 +262,7 @@ async function QuickSort (startIndex, arrayLen) {
             await Sleep();
             
             if (left >= right){
-                childElements[left].className = 'vals';
+                childElements[left].className = blue;
                 break;
             }
             // Break once we find value greater than pivot value.
@@ -247,7 +271,7 @@ async function QuickSort (startIndex, arrayLen) {
                 break;
             }
             // Keep looping if value at current index not greater than pivot value.
-            childElements[left].className = 'vals';
+            childElements[left].className = blue;
             left++;
         }
 
@@ -266,7 +290,7 @@ async function QuickSort (startIndex, arrayLen) {
             await Sleep();
 
             if (right < left){
-                childElements[right].className = 'vals';
+                childElements[right].className = blue;
                 break;
             }
             // Break once we find value less than pivot value.
@@ -275,7 +299,7 @@ async function QuickSort (startIndex, arrayLen) {
                 break;
             }
             // Keep looping if value at current index not less than pivot value.
-            childElements[right].className = 'vals';
+            childElements[right].className = blue;
             right--;
         }
         
@@ -315,8 +339,8 @@ async function QuickSort (startIndex, arrayLen) {
         childElements[left].className = green;
         childElements[right].className = green;
         await Sleep();
-        childElements[left].className = 'vals';
-        childElements[right].className = 'vals';
+        childElements[left].className = blue;
+        childElements[right].className = blue;
 
         left++;
     }
@@ -329,7 +353,7 @@ async function QuickSort (startIndex, arrayLen) {
         SwapValues(childElements[pivotFinalIndex], childElements[pivotIndex]);
     } 
 
-    childElements[pivotIndex].className = 'vals';
+    childElements[pivotIndex].className = blue;
     childElements[pivotFinalIndex].className = green;
 
     // Split array into left side of final pivot location, and right side of final pivot location, and recursively call QuickSort function.
@@ -358,7 +382,7 @@ async function SelectionSort () {
             else {
                 // Set new largestVal when vurrent index value > largest val and change old largest value element back to blue.
                 if (parseInt(childElements[counter].innerHTML) > largesVal){
-                    childElements[largestValIndex].className = 'vals';
+                    childElements[largestValIndex].className = blue;
 
                     largesVal = parseInt(childElements[counter].innerHTML);
                     largestValIndex = counter;
@@ -367,7 +391,7 @@ async function SelectionSort () {
 
                 } 
                 else {
-                    childElements[counter].className = 'vals';
+                    childElements[counter].className = blue;
                 }
             }
 
@@ -419,8 +443,8 @@ async function BubbleSort () {
             el2.className = green;
             await Sleep();
             
-            el1.className = 'vals';
-            el2.className = 'vals';
+            el1.className = blue;
+            el2.className = blue;
 
         }
         childElements[divArraySize].className = green;
